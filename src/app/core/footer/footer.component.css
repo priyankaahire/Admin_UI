@@ -1,0 +1,9 @@
+.footer-details {
+    color: #fff;
+}
+.footer-details p {
+   display: grid;
+}
+.footer-details p a{
+    color: #fff;
+ }

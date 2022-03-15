@@ -1,84 +1,96 @@
 <div class="admin-panel-container">
     <p-toast></p-toast>
     <div class="card">
-        <p-table #datatableid [value]="admins" dataKey="id" editMode="row" [paginator]="true" [rows]="rows" [loading]="loading"
-        [(selection)]="selectedRecord" selectionMode="multiple"
-        [globalFilterFields]="['name','email','role']" [showCurrentPageReport]="true" responsiveLayout="scroll">
-            <ng-template pTemplate="caption">
-                <div class="flex">
-                    <span class="p-input-icon-left ml-auto">
-                        <i class="pi pi-search"></i>
-                        <input #inputsearchvalue style="width: 97rem;" pInputText type="text" (input)="datatableid.filterGlobal(inputsearchvalue.value, 'contains')" placeholder="Search by name, email or role" />
-                    </span>
-                </div>
-            </ng-template>
-            <ng-template pTemplate="header">
-                <tr [pSelectableRow]="admin">
-                    <th style="width: 3rem">
-                        <p-tableHeaderCheckbox (click)="$event.stopPropagation()"></p-tableHeaderCheckbox>
-                    </th>
-                    <th>Name</th>
-                    <th>Email</th>
-                    <th>Role</th>
-                    <th style="width:12rem">Actions</th>
-                </tr>
-            </ng-template>
-            <ng-template pTemplate="body" let-admin let-editing="editing" let-rowindex="rowIndex">
-                <tr  [pSelectableRow]="admin" [pSelectableRowIndex]="rowindex" [pEditableRow]="admin">
-                    <td>
-                        <p-tableCheckbox (click)="$event.stopPropagation()"  [value]="admin"></p-tableCheckbox>
-                    </td>
-                    <td>
-                        <p-cellEditor>
-                            <ng-template pTemplate="input">
-                                <input pInputText type="text" [(ngModel)]="admin.name" required>
-                            </ng-template>
-                            <ng-template pTemplate="output">
-                                {{admin.name }}
-                            </ng-template>
-                        </p-cellEditor>
-                    </td>
-                    <td>
-                        <p-cellEditor>
-                            <ng-template pTemplate="input">
-                                <input pInputText type="text" [(ngModel)]="admin.email">
-                            </ng-template>
-                            <ng-template pTemplate="output">
-                                {{admin.email }}
-                            </ng-template>
-                        </p-cellEditor>
-                    </td>
-                    <td>
-                        <p-cellEditor>
-                            <ng-template pTemplate="input">
-                                <input pInputText type="text" [(ngModel)]="admin.role">
-                            </ng-template>
-                            <ng-template pTemplate="output">
-                                {{admin.role | titlecase }}
-                            </ng-template>
-                        </p-cellEditor>
-                    </td>
-                    <td style="text-align:left">
-                        <button *ngIf="!editing" pButton pRipple type="button" pInitEditableRow icon="pi pi-pencil"
-                            (click)="onRowEditInit(admin)" class="p-button-rounded p-button-text"></button>
-                        <button *ngIf="editing" pButton pRipple type="button" pSaveEditableRow icon="pi pi-check"
-                            (click)="onRowEditSave(admin)"
-                            class="p-button-rounded p-button-text p-button-success mr-2"></button>
-                        <button *ngIf="editing" pButton pRipple type="button" pCancelEditableRow icon="pi pi-times"
-                            (click)="onRowEditCancel(admin, rowindex)"
-                            class="p-button-rounded p-button-text p-button-danger"></button>
-                        <button pButton pRipple icon="pi pi-trash" (click)="deleteAdmin(admin)"
-                            class="p-button-rounded p-button-text p-button-danger"></button>
-                    </td>
-                </tr>
-            </ng-template>
-            <ng-template pTemplate="paginatorleft">
-                <button pButton type="button" label="Delete selected" class="p-button-rounded p-button-danger"
-                (click)="deleteSelectedAdmins()" [disabled]="!selectedRecord || !selectedRecord.length"></button>
-            </ng-template>
-            <ng-template pTemplate="paginatorright">
-            </ng-template>
-        </p-table>
+            <p-table #datatableid [value]="admins" dataKey="id" editMode="row" [paginator]="true" [rows]="rows"
+                [loading]="loading" [(selection)]="selectedRecord" selectionMode="multiple"
+                (onPageChange)="paginate($event)" [globalFilterFields]="['name','email','role']"
+                [showCurrentPageReport]="true" responsiveLayout="scroll">
+                <ng-template pTemplate="caption">
+                    <div class="flex">
+                        <span class="p-input-icon-left ml-auto">
+                            <i class="pi pi-search"></i>
+                            <input #inputsearchvalue style="width: 97rem;" pInputText type="text"
+                                (input)="datatableid.filterGlobal(inputsearchvalue.value, 'contains')"
+                                placeholder="Search by name, email or role" />
+                        </span>
+                    </div>
+                </ng-template>
+                <ng-template pTemplate="header">
+                    <tr [pSelectableRow]="admin">
+                        <th style="width: 3rem">
+                            <p-tableHeaderCheckbox (click)="$event.stopPropagation()"></p-tableHeaderCheckbox>
+                        </th>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Role</th>
+                        <th style="width:12rem">Actions</th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-admin let-editing="editing" let-rowindex="rowIndex">
+                   
+                    <tr [pSelectableRow]="admin" [pSelectableRowIndex]="rowindex" [pEditableRow]="admin">
+                        <td>
+                            <p-tableCheckbox (click)="$event.stopPropagation()" [value]="admin"></p-tableCheckbox>
+                        </td>
+
+                        <td>
+                            <p-cellEditor>
+                                <ng-template pTemplate="input">
+                                    <input pInputText type="text" [(ngModel)]="admin.name" required>
+                                </ng-template>
+                                <ng-template pTemplate="output">
+                                    {{admin.name }}
+                                </ng-template>
+                            </p-cellEditor>
+                        </td>
+                        <td>
+                            <p-cellEditor>
+                                <ng-template pTemplate="input">
+                                    <input pInputText type="text" [(ngModel)]="admin.email">
+                                </ng-template>
+                                <ng-template pTemplate="output">
+                                    {{admin.email }}
+                                </ng-template>
+                            </p-cellEditor>
+                        </td>
+                        <td>
+                            <p-cellEditor>
+                                <ng-template pTemplate="input">
+                                    <input pInputText type="text" [(ngModel)]="admin.role">
+                                </ng-template>
+                                <ng-template pTemplate="output">
+                                    {{admin.role | titlecase }}
+                                </ng-template>
+                            </p-cellEditor>
+                        </td>
+                        <td style="text-align:left">
+                            <button *ngIf="!editing" pButton pRipple type="button" pInitEditableRow icon="pi pi-pencil"
+                                (click)="onRowEditInit(admin)" class="p-button-rounded p-button-text"></button>
+                            <button *ngIf="editing" pButton pRipple type="button" pSaveEditableRow icon="pi pi-check"
+                                (click)="onRowEditSave(admin)"
+                                class="p-button-rounded p-button-text p-button-success mr-2"></button>
+                            <button *ngIf="editing" pButton pRipple type="button" pCancelEditableRow icon="pi pi-times"
+                                (click)="onRowEditCancel(admin, rowindex)"
+                                class="p-button-rounded p-button-text p-button-danger"></button>
+                            <button pButton pRipple icon="pi pi-trash" (click)="deleteAdmin(admin)"
+                                class="p-button-rounded p-button-text p-button-danger"></button>
+                        </td>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="paginatorleft">
+                    <button pButton type="button" label="Delete selected" class="p-button-rounded p-button-danger"
+                        (click)="deleteSelectedAdmins()"
+                        [disabled]="!selectedRecord || !selectedRecord.length"></button>
+                </ng-template>
+                <ng-template pTemplate="paginatorright">
+                </ng-template>
+                <ng-template pTemplate="emptymessage">
+                    <tr>
+                        <td></td>
+                        <td colspan="4">No records to display</td>
+                    </tr>
+                </ng-template>
+            </p-table>
         <p-confirmDialog [style]="{width: '450px'}"></p-confirmDialog>
     </div>
 </div>

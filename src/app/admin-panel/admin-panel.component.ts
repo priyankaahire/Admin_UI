@@ -3,6 +3,8 @@ import { AdminService } from '../core/services/admin.service';
 import { Admin } from '../shared/model/admin';
 import { ConfirmationService } from 'primeng/api';
 import { MessageService } from 'primeng/api';
+import { Observable, of } from "rxjs";
+import { catchError, finalize, map } from "rxjs/operators";
 
 
 @Component({
@@ -28,10 +30,17 @@ export class AdminPanelComponent implements OnInit {
 
   ngOnInit() {
     this.adminService.getAdmins()
-      .subscribe(data => {
-        this.admins = data;
-        this.loading = false;
-      });
+    .pipe(
+      catchError((err) => {
+        console.error(err.message);
+        throw "Something went wrong";
+      }),
+      finalize(() => this.loading = false)
+    )
+    .subscribe((adminData) => {
+      this.admins = adminData;
+      this.loading = false;
+    });
   }
   /**
    * Row Edit
@@ -66,6 +75,9 @@ export class AdminPanelComponent implements OnInit {
   }
   isFirstPage(): boolean {
     return this.admins ? this.first === 0 : true;
+  }
+  paginate($event:any) {
+console.log("pagination");
   }
   /**
    * Delected Selected Admins

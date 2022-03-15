@@ -17,14 +17,10 @@ export class AdminPanelComponent implements OnInit {
   admins: Array<Admin> = [];
   selectedRecord: Array<Admin> = [];
   admin: Array<Admin> = [];
-  first = 0;
   rows = 10;
   loading: boolean = true;
   cloneAdmins: { [s: string]: Admin; } = {};
-
-  totalRecords: number = 0;
-  selectAll: boolean = false;
-  selectedAdmin: Admin[] = [];
+  currentPageIndex = 0;
 
   constructor(private adminService: AdminService, private messageService: MessageService, private confirmationService: ConfirmationService) { }
 
@@ -61,23 +57,8 @@ export class AdminPanelComponent implements OnInit {
    * Pagination 
    * 
    */
-  next() {
-    this.first = this.first + this.rows;
-  }
-  prev() {
-    this.first = this.first - this.rows;
-  }
-  reset() {
-    this.first = 0;
-  }
-  isLastPage(): boolean {
-    return this.admins ? this.first === (this.admins.length - this.rows) : true;
-  }
-  isFirstPage(): boolean {
-    return this.admins ? this.first === 0 : true;
-  }
   paginate($event:any) {
-console.log("pagination");
+    this.currentPageIndex = $event.first;
   }
   /**
    * Delected Selected Admins
@@ -89,8 +70,8 @@ console.log("pagination");
       header: 'Confirm',
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
+        this.selectedRecord = this.admins.splice(this.currentPageIndex, 10)
         this.admins = this.admins.filter(val => !this.selectedRecord.includes(val));
-        this.selectedRecord = [];
         this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Admin Deleted', life: 3000 });
       }
     });
@@ -112,6 +93,5 @@ console.log("pagination");
       }
     });
   }
-
 
 }

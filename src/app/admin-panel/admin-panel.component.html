@@ -2,8 +2,10 @@
     <p-toast></p-toast>
     <div class="card">
             <p-table #datatableid [value]="admins" dataKey="id" editMode="row" [paginator]="true" [rows]="rows"
-                [loading]="loading" [(selection)]="selectedRecord" selectionMode="multiple"
-                (onPageChange)="paginate($event)" [globalFilterFields]="['name','email','role']"
+           
+            [loading]="loading" [(selection)]="selectedRecord" 
+                 selectionMode="multiple"
+                (onPage)="paginate($event)" [globalFilterFields]="['name','email','role']"
                 [showCurrentPageReport]="true" responsiveLayout="scroll">
                 <ng-template pTemplate="caption">
                     <div class="flex">

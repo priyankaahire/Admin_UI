@@ -70,8 +70,8 @@ export class AdminPanelComponent implements OnInit {
       header: 'Confirm',
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
-        this.selectedRecord = this.admins.splice(this.currentPageIndex, 10)
         this.admins = this.admins.filter(val => !this.selectedRecord.includes(val));
+        this.selectedRecord = [];
         this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Admin Deleted', life: 3000 });
       }
     });

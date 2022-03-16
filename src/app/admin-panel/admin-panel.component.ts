@@ -58,6 +58,7 @@ export class AdminPanelComponent implements OnInit {
    * 
    */
   paginate($event:any) {
+    console.log($event);
     this.currentPageIndex = $event.first;
   }
   /**
@@ -65,13 +66,14 @@ export class AdminPanelComponent implements OnInit {
    * 
    */
   deleteSelectedAdmins() {
+    console.log("in delete");
     this.confirmationService.confirm({
       message: 'Are you sure you want to delete the selected admins?',
       header: 'Confirm',
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
-        this.selectedRecord = this.admins.splice(this.currentPageIndex, 10)
         this.admins = this.admins.filter(val => !this.selectedRecord.includes(val));
+        this.selectedRecord = [];
         this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Admin Deleted', life: 3000 });
       }
     });

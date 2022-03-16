@@ -58,6 +58,7 @@ export class AdminPanelComponent implements OnInit {
    * 
    */
   paginate($event:any) {
+    console.log($event);
     this.currentPageIndex = $event.first;
   }
   /**
@@ -65,6 +66,7 @@ export class AdminPanelComponent implements OnInit {
    * 
    */
   deleteSelectedAdmins() {
+    console.log("in delete");
     this.confirmationService.confirm({
       message: 'Are you sure you want to delete the selected admins?',
       header: 'Confirm',

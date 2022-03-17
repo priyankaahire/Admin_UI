@@ -12,6 +12,7 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 5. run `npm install` to install the node_modules with all dependencies which is available in package.json
 6. run `npm start`
 7. After comipled successfully open Navigate to `http://localhost:4200/`
+8. run `npm test` to run the test case
 
 
 # Completed task from Assignment

@@ -5,7 +5,9 @@ import { catchError, map, tap } from 'rxjs/operators';
 import { Admin } from '../../shared/model/admin';
 import {GeneralService, endpoint, httpOptions} from './general.service';
 
-@Injectable()
+@Injectable({
+    providedIn: 'root'
+  })
 export class AdminService {
     constructor(private http: HttpClient, private _generalService: GeneralService) { }
     getAdmins(): Observable<any[]> {
